@@ -1,0 +1,20 @@
+.scrappy-hover {
+	outline: 3px solid red;
+}
+
+.scrappy-matched {
+	outline: 3px solid #ccc;
+}
+
+.scrappy-current-selector {
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	background: rgba(255,255,255,1);
+	width: 400px;
+	height: 20px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	opacity: 0.8;
+	text-align: right;
+}
