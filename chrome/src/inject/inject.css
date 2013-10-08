@@ -1,3 +1,17 @@
+html,body {
+	margin-right: 250px;
+}
+
+.scrappy-sidebar {
+	position: fixed;
+	z-index: 5000;
+	top: 0px;
+	right: 0px;
+	background-color: white;
+	width: 150px;
+	height: 100%;
+}
+
 .scrappy-hover {
 	outline: 3px solid red;
 }
@@ -6,15 +20,7 @@
 	outline: 3px solid #ccc;
 }
 
-.scrappy-current-selector {
-	position: fixed;
-	top: 0px;
-	right: 0px;
-	background: rgba(255,255,255,1);
-	width: 400px;
-	height: 20px;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	opacity: 0.8;
-	text-align: right;
+.scrappy-selected { 
+	outline: 3px solid orange;	
 }
+

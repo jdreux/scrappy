@@ -25,19 +25,16 @@
   "content_scripts": [
     {
       "matches": [
-        "*://*/*"
+        "*://www.yelp.com/*"
       ],
       "css": [
         "src/inject/inject.css"
-      ]
-    },
-    {
-      "matches": [
-        "*://*/*"
       ],
       "js": [
         "js/jquery/jquery.js",
+        "js/handlebars.js",
         "src/inject/inject.js"
+        "src/templates.js"
       ]
     }
   ]

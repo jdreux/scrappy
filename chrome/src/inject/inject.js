@@ -1,22 +1,14 @@
 
 chrome.extension.sendMessage({}, function(response) {
-	// var readyStateCheckInterval = setInterval(function() {
-	// if (document.readyState === "complete") {
-	// 	clearInterval(readyStateCheckInterval);
 
-	// 	// ----------------------------------------------------------
-	// 	// This part of the script triggers when page is done loading
-	// 	console.log("Hello. This message was sent from scripts/inject.js");
-	// 	// ----------------------------------------------------------
+	var $sidebar = $('<div class="scrappy-sidebar"><p class="current">Current selector: <b></b></p></div>');
 
-	// }
-	// }, 10);
-	
-	var $currentSelectorDiv = $('<div class="scrappy-current-selector"></div>');
-	$('body').append($currentSelectorDiv);
+	var $current = $sidebar.find('.current b');
+
+	$('body').append($sidebar);
 	$('body *:visible').hover(function(e) {
 
-		var selector = $(this).prop('tagName');
+		var selector = $(this).prop('tagName').toLowerCase();
 
 		$.each($(this).attr('class')?$(this).attr('class').split(/\s+/):[], function(index, item){
 			if(item!='scrappy-matched' && item!='scrappy-hover'){
@@ -27,9 +19,11 @@ chrome.extension.sendMessage({}, function(response) {
 		$(selector).addClass('scrappy-matched');
 		$(this).removeClass('scrappy-matched');
 	    $(this).addClass('scrappy-hover');
+	    
 	    console.log("selector: ", selector, $(selector).length, $('.scrappy-matched').length);
+	    
 	    elem = $(this);
-	    $currentSelectorDiv.text("Selected: "+selector);
+	    $current.text(selector);
 	    //going over the highlighted items
 	    $('body *:visible').filter('.scrappy-hover').each(function(k,v) {
 	        if (elem.get(0) != v) {
@@ -49,6 +43,10 @@ chrome.extension.sendMessage({}, function(response) {
 	    $(this).removeClass('scrappy-hover');
 	    $('.scrappy-matched').removeClass('scrappy-matched');
 	});
-	
+
+
+	chrome.runtime.sendMessage({greeting: "hello"}, function(res) {
+  		
+	});
 });
 
