@@ -6,7 +6,13 @@ chrome.extension.sendMessage({}, function(response) {
 	var $current = $sidebar.find('b.selector');
 
 	$('body').append($sidebar);
+
+	var matching = false;
+	var $selector;
+
 	$('body *:visible').not('.scrappy, .scrappy *').hover(function(e) {
+
+		if(!matching) return;
 
 		var selector = $(this).prop('tagName').toLowerCase();
 
@@ -15,46 +21,59 @@ chrome.extension.sendMessage({}, function(response) {
 				selector+='.'+item;
 			}
 		});
-		$('.scrappy-matched').removeClass('scrappy-matched');
-		$(this).addClass('scrappy-hover');
-		$(selector).not('.scrappy, .scrappy *').not(this).addClass('scrappy-matched');
-//		$(this).removeClass('scrappy-matched');
-	    
-	    
-	    console.log("selector: ", selector, $(selector).length, $('.scrappy-matched').length);
-	    
-	    elem = $(this);
-	    $current.text(selector);
-	    //going over the highlighted items
-	    
-	    $('body *:visible').filter('.scrappy-hover').each(function(k,v) {
-	        if (elem.get(0) != v) {
-	            /* highlighted item is NOT the current item being hovered
-	            This means - it's a parent element, let's mark it (for when we get out of the child element),
-	            and unhighlight it */
-	            //$(v).attr('child_highlighted',1).removeClass('scrappy-hover');
-	            $(v).removeClass('scrappy-hover');
-	        }
-	    });
 
+		//Display selector string
+		$current.text(selector);
+
+		$selector = $(selector);
+
+		console.log("selector", $selector.length);
+
+		//Reset old matches
+		$('.scrappy-matched').removeClass('scrappy-matched');
+		$('.scrappy-hover').removeClass('scrappy-hover');
+
+		//Highlight matches
+		$(this).addClass('scrappy-hover');
+		$selector.not('.scrappy, .scrappy *').not(this).addClass('scrappy-matched');
+	   	
 	    var matchedItems = [];
-	    $(selector).each(function(k,v){
+	    
+	    $selector.each(function(k,v){
 	    	matchedItems.push($(v).text().trim());
 	    });
-
-	    console.log(matchedItems)
-
-	    $('.scrappy .results pre').html(JSON.stringify(matchedItems, null, 2));
+	    console.log($('.scrappy .matches pre'));
+	    $('.scrappy .matches pre').html(JSON.stringify(matchedItems, null, 2));
 
 	}, function(e) {
-	    $(this).removeClass('scrappy-hover');
-	    //if the target element (the element now being hovered) is parent, highlight it and remove the marking
-	    // if ($(e.toElement).attr('child_highlighted')) {
-	    //     $(e.toElement).addClass('scrappy-hover').removeAttr('child_highlighted');
-	    // }
+		
+		if(!matching) return;
+
 	    $(this).removeClass('scrappy-hover');
 	    $('.scrappy-matched').removeClass('scrappy-matched');
 	});
+
+	$('.scrappy .key button').click(function(e){
+		e.preventDefault();
+		matching = !matching;
+		$('.scrappy .matches b').text($('.scrappy .key input[type=text]').val()+' = ');
+		
+	});
+
+	$('.scrappy .matches button').click(function(e){
+		e.preventDefault();
+		$('.scrappy .results').append('<p>'+$('.scrappy .matches b').text()+': '+$selector.length+' matches'+'</p>');
+		$('.scrappy .key input[type=text]').val('')
+	});
+
+	$(document).on({
+		click: function(e){
+			e.preventDefault();
+			$('.scrappy-hover').addClass('scrappy-matched').removeClass('scrappy-hover');
+			matching = false;
+
+		}
+	}, '.scrappy-hover');
 
 
 	chrome.runtime.sendMessage({greeting: "hello"}, function(res) {
