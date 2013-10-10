@@ -1,15 +1,41 @@
 html,body {
-	margin-right: 250px;
+	margin-right: 350px;
 }
 
-.scrappy-sidebar {
+.scrappy {
 	position: fixed;
 	z-index: 5000;
 	top: 0px;
 	right: 0px;
 	background-color: white;
-	width: 150px;
+	width: 250px;
 	height: 100%;
+	border: 1px solid #999;
+}
+
+.scrappy .key {
+	border-bottom: 1px solid #CCC;
+}
+
+.scrappy .select {
+	border-bottom: 1px solid #CCC;
+}
+
+.scrappy .select b.selector {
+	color: #666;
+	border-bottom: 1px dashed #666;
+    text-decoration: none;
+}
+
+.scrappy .results {
+	border-bottom: 1px solid #CCC;
+}
+
+.scrappy .menu {
+	position: absolute;
+	bottom: 0;
+	border-top: 1px solid #CCC;
+	width: 100%;
 }
 
 .scrappy-hover {
