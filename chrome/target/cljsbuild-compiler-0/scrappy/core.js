@@ -1,0 +1,14 @@
+goog.provide('scrappy.core');
+goog.require('cljs.core');
+goog.require('dommy.core');
+goog.require('dommy.core');
+goog.require('dommy.utils');
+goog.require('dommy.utils');
+goog.require('Handlebars');
+goog.require('Handlebars');
+console.log("ANOTHER TEST:",Handlebars,window,(window["Templates"]));
+scrappy.core.sidebar = (function (){var dom5605 = document.createElement("p");dom5605.className = "left";
+dom5605.appendChild(document.createTextNode("TEST"));
+return dom5605;
+})();
+dommy.core.append_BANG_.call(null,document.body,scrappy.core.sidebar);
