@@ -13,11 +13,11 @@ html,body {
 	border: 1px solid #999;
 }
 
-.scrappy .key {
-	border-bottom: 1px solid #CCC;
+.scrappy .hidden {
+  display: none;
 }
 
-.scrappy .select {
+.scrappy .separator {
 	border-bottom: 1px solid #CCC;
 }
 
@@ -28,10 +28,6 @@ html,body {
 }
 
 .scrappy .matches {
-	border-bottom: 1px solid #CCC;
-}	
-
-.scrappy .results {
 	border-bottom: 1px solid #CCC;
 }
 
@@ -50,7 +46,7 @@ html,body {
 	outline: 3px solid #ccc;
 }
 
-.scrappy-selected { 
-	outline: 3px solid orange;	
+.scrappy-selected {
+	outline: 3px solid orange;
 }
 
