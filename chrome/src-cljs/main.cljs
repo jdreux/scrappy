@@ -1,43 +1,44 @@
 (ns scrappy.core
-	(:require
-		[Handlebars]
-		[jayq.util])
-	(:use [jayq.core :only [$ html append attr on prevent val show hide]]))
+  (:require
+    [Handlebars]
+    [dommy.utils :as utils]
+    [dommy.core :as d])
+  (:use-macros
+    [dommy.macros :only [node sel sel1]]))
 
+;Utility Methods
 (defn log [a]
-	(. js/console log (clj->js a)))
+	(. js/console log a))
 
-(defn not [s]
-  ())
+(defn toggle-text [el texts]
+  (let [i ]))
 
+;Load all templates
 (def templates
-	(reduce (fn [acc $el]
-		(assoc acc (keyword (attr $el :id)) (. js/Handlebars compile (html $el))))
+	(reduce (fn [acc el]
+		(assoc acc (keyword (d/attr el :id)) (. js/Handlebars compile (d/html el))))
 		{}
-		($ "script[type='template/handlebars']")))
-
-
+		(sel "script[type='template/handlebars']")))
 
 ;Append the sidebar
-(append ($ :body) ((:sidebar-template templates)))
+(d/set-html! (sel1 :body) ((:sidebar-template templates)))
 
 ;Bind events
-(on ($ "input[name='scrap-type']") :change
-    #(if (= "multi" (val ($ "input[name='scrap-type']:checked")))
-       (show ($ :#next-page-div))
-       (hide ($ :#next-page-div))))
 
+;Scrap type toggle
+(doseq [el (sel "input[name='scrap-type']")]
+  (d/listen! el :change
+     (fn [e]
+       (let [value (d/value (.-currentTarget e))]
+         (if (= value "multi")
+           (d/show! (sel1 :#next-page-div))
+           (d/hide! (sel1 :#next-page-div)))))))
 
-;JS equivalent, for comparaison
-;$("input[name='scrap-type']").on('change', function(e){
-;  if('multi' == $("input[name='scrap-type']:checked").val()){
-;    $('#next-page-div').show();
-;  } else {
-;    $('#next-page-div').hide();
-;  }
-;});
+;Start matching button
+;; (d/listen! (sel1 ".key button") :click
+;;   )
 
+(log (take 10 (repeatedly [1 2])))
 
-(on ($ "div.key button")
-    :click
-    #())
+(defn start-matching!
+  )
