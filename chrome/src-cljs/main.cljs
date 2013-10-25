@@ -4,7 +4,7 @@
 		[jayq.util])
 	(:use [jayq.core :only [$ html append attr on prevent val
                           show hide prop remove-class add-class
-                          document-ready]]))
+                          document-ready text]]))
 
 
 (defn log [a]
@@ -19,8 +19,10 @@
 ;Missing jQuery methods:
 
 (defn jq-not [$el sel]
-  (.not $el (name sel)))
+  (.not $el sel))
 
+(defn hover [$el handler]
+  (.hover $el handler))
 
 (document-ready
  (fn []
@@ -44,30 +46,24 @@
   ;  }
   ;});
 
-   (log (count ($ "body *:visible")))
-   (log (count (jq-not ($ "body *:visible") ".scrappy, .scrappy *")))
+   (def $current ($ "div.select b.selector"))
 
 
-   (on (jq-not ($ "body *:visible") ".scrappy, .scrappy *") "hover"
+   (hover (jq-not ($ "body *:visible") ".scrappy, .scrappy *")
        (fn [e]
-         (log "hover!!")))
-
-;;   (on (jq-not ($ "body *:visible")  :hover
-;;       (fn [e]
-;;         (this-as
-;;          [elem]
-;;          (log elem))))
-
-;;   (on ($ "body *:visible") :hover
-;;     (fn [e]
-;;       (this-as [elem]
-;;         (log elem))))
-
-;;   (on ($ js/document) :click (fn [e]
-;;                                (prevent e)
-;;                                (-> ($ :.scrappy-hover) (add-class :scrappy-matched) (remove-class :scrappy-hover)))
-;;       :.scrappy-hover)
-
-
+         (let [$el ($ (.-currentTarget e))
+               classes (into
+                        [" "]
+                        (filter #(or (not= "scrappy-matched" %) (not= "scrappy-hover" %))
+                                (clojure.string/split (or (attr $el "class") "") #"\s"))    )
+               selector (str (clojure.string/join "." classes))
+               matched (jq-not (jq-not ($ selector) ".scrappy, .scrappy *") $el)]
+           (log selector)
+           (log (.-length matched))
+           (text $current selector)
+           (remove-class ($ ".scrappy-hover, .scrappy-matched") "scrappy-hover scrappy-matched")
+           (add-class $el :scrappy-hover)
+           (add-class matched :scrappy-matched)
+            )))
 
    ))
