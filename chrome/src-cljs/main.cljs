@@ -2,9 +2,9 @@
 	(:require
 		[Handlebars]
 		[jayq.util])
-	(:use [jayq.core :only [$ html append attr on prevent val
+	(:use [jayq.core :only [$ html append attr on off prevent val
                           show hide prop remove-class add-class
-                          document-ready text]]))
+                          document-ready text prop unbind]]))
 
 
 (defn log [a]
@@ -24,8 +24,9 @@
 (defn hover [$el handler]
   (.hover $el handler))
 
-(document-ready
- (fn []
+
+;Start
+(document-ready (fn []
 
   ;Append the sidebar
   (append ($ :body) ((:sidebar-template templates)))
@@ -36,34 +37,36 @@
          (show ($ :#next-page-div))
          (hide ($ :#next-page-div))))
 
+  (def $current ($ "div.select b.selector"))
 
-  ;JS equivalent, for comparaison
-  ;$("input[name='scrap-type']").on('change', function(e){
-  ;  if('multi' == $("input[name='scrap-type']:checked").val()){
-  ;    $('#next-page-div').show();
-  ;  } else {
-  ;    $('#next-page-div').hide();
-  ;  }
-  ;});
+  (on ($ ".key button") :click (fn [e]
 
-   (def $current ($ "div.select b.selector"))
+    (remove-class ($ ".scrappy-hover, .scrappy-matched") "scrappy-hover scrappy-matched")
+
+    (hover (jq-not ($ "body *:visible") ".scrappy, .scrappy *")
+      (fn [e]
+        (let [$el ($ (.-currentTarget e))
+              classes (filter #(or (not= "scrappy-matched" %) (not= "scrappy-hover" %))
+                        (clojure.string/split (or (attr $el "class") "") #"\s"))
+              tag-name (clojure.string/lower-case (prop $el "tagName"))
+              selector (clojure.string/join "." (into [tag-name] classes))
+              matched (jq-not (jq-not ($ selector) ".scrappy, .scrappy *") $el)]
+
+          ;(log selector)
+          ;(log tag-name)
+          (text $current selector)
+          (remove-class ($ ".scrappy-hover, .scrappy-matched") "scrappy-hover scrappy-matched")
+          (add-class $el :scrappy-hover)
+          (add-class matched :scrappy-matched))))))
+
+  ;for testing
+  (.click ($ ".key button"))
+
+  (on ($ js/document) :click :.scrappy-hover
+    (fn [e]
+      (prevent e)
+      ;Stop matching
+      (off ($ "body *:visible") "mouseenter mouseleave")))))
 
 
-   (hover (jq-not ($ "body *:visible") ".scrappy, .scrappy *")
-       (fn [e]
-         (let [$el ($ (.-currentTarget e))
-               classes (into
-                        [" "]
-                        (filter #(or (not= "scrappy-matched" %) (not= "scrappy-hover" %))
-                                (clojure.string/split (or (attr $el "class") "") #"\s"))    )
-               selector (str (clojure.string/join "." classes))
-               matched (jq-not (jq-not ($ selector) ".scrappy, .scrappy *") $el)]
-           (log selector)
-           (log (.-length matched))
-           (text $current selector)
-           (remove-class ($ ".scrappy-hover, .scrappy-matched") "scrappy-hover scrappy-matched")
-           (add-class $el :scrappy-hover)
-           (add-class matched :scrappy-matched)
-            )))
 
-   ))
