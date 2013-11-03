@@ -9,42 +9,45 @@
 			<div class="scrappy">
 				<div class="next-mode separator">
 					<h3>Scrap Type</h3>
-					<p><input type="radio" name="scrap-type" value="single" checked="checked"/>Single Page</p>
-					<p><input type="radio" name="scrap-type" value="multi"/>Multi Page</p>
+					<p>
+                        <input type="radio" name="scrap-type" value="single" checked="checked"/>Single Page
+                        <input type="radio" name="scrap-type" value="multi"/>Multi Page
+                    </p>
                     <div id="next-page-div" style="display:none">
     					<p><b>Next Page Selector: </b> <input type="text" name="next-selector" readonly="readonly"/> <button>Select</button></p>
                     </div>
 				</div>
 				<div class="key separator">
                     <h3>Match</h3>
+                    <p><label>Type: </label></p>
                     <p>
-                        <input type="text" name="key" value="" placeholder="Match Name">
+                        <input type="radio" name="match-type" value="collection" checked="checked"/>Collection
+                        <input type="radio" name="match-type" value="ancstor"/>Ancestor
+                        <input type="radio" name="match-type" value="single"/> Single
+                    </p>
+                    <p>
                         <button>Start matching</button>
                     </p>
-                    <p><label>Type: </label></p>
-                    <p><input type="radio" name="match-type" value="collection" checked="checked"/>Collection</p>
-                    <p><input type="radio" name="match-type" value="ancstor"/>Ancestor</p>
-					<p><input type="radio" name="match-type" value="single"/> Single</p>
-				</div>
-				<div class="select">
-					<h6>Current selector</h6>
-					<b class="selector"></b>
-					<h6>Match Type:</h6>
 				</div>
 				<div class="matches separator">
-					<h6>Matched Data</h6>
-					<b></b>
-					<pre>
+                    <h6>Current selector</h6>
+					<b class="selector"></b>
 
-					</pre>
-					<button>Match</button>
+					<h6>Matched Data</h6>
+					<b class="count"></b>
+                    <div style="overflow: auto; height: 100px;">
+                   		<pre>
+
+			    		</pre>
+                    </div>
+					<input type="text" name="key" value="" placeholder="Match Name"><button disabled="disabled">Match</button>
 				</div>
 				<div class="results separator">
+                    Data
+                    <ul>
 
-				</div>
-
-				<div class="menu separator hidden">
-					<button>Save Blueprint</button>
+                    </ul>
+                    <button>Save to file</button>
 				</div>
 			</div>
 		</script>

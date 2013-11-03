@@ -11,6 +11,7 @@ html,body {
 	width: 250px;
 	height: 100%;
 	border: 1px solid #999;
+  overflow-y: scroll;
 }
 
 .scrappy .hidden {
